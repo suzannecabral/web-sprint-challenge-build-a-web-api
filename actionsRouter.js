@@ -10,12 +10,8 @@ const router = express.Router();
 //middleware
 //----------------------------------
 
-// const validateActionId = (req,res,next)=>{
-    
-//     next();
-// }
-
-
+//[x]
+//validate Id
 const validActionId = (req, res, next) => {
     const {id} = req.params;
 
@@ -34,6 +30,9 @@ const validActionId = (req, res, next) => {
             res.status(500).json({message:`Server error validating action ID`});
         })
 };
+
+//[ ]
+//validate input
 
 
 

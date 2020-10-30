@@ -10,6 +10,8 @@ const router = express.Router();
 //middleware
 //----------------------------------
 
+//[x]
+//validate Id
 const validProjectId = (req, res, next) => {
     const {id} = req.params;
 
@@ -29,6 +31,9 @@ const validProjectId = (req, res, next) => {
         })
 };
 
+//[ ]
+//validate input
+
 //----------------------------------
 //[ ]
 //endpoints
@@ -46,7 +51,7 @@ router.get('/', (req,res)=>{
             res.status(500).json({message:`server error retrieving projects data`});
         })
 });
-//[ ]
+//[x]
 //get :id
 router.get('/:id', validProjectId, (req,res)=>{
     res.status(200).json(req.project);
