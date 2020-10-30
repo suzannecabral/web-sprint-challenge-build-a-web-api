@@ -5,7 +5,13 @@ const Actions = require('./data/helpers/actionModel');
 //define new router
 const router = express.Router();
 
+
+//[ ]
 //endpoints
+//----------------------------------
+
+//[x]
+//get all
 router.get('/', (req, res) => {
     Actions.get()
     .then(data=>{
@@ -17,6 +23,25 @@ router.get('/', (req, res) => {
     })
 });
 
+//[ ]
+//get :id
+
+
+//[ ]
+//post new
+
+
+//[ ]
+//update :id
+
+
+//[ ]
+//delete :id
+
+//----------------------------------
+
+
+//[ ]
 //middleware
 
 
