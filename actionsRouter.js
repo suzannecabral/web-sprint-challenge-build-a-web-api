@@ -5,7 +5,39 @@ const Actions = require('./data/helpers/actionModel');
 //define new router
 const router = express.Router();
 
+//----------------------------------
+//[ ]
+//middleware
+//----------------------------------
 
+// const validateActionId = (req,res,next)=>{
+    
+//     next();
+// }
+
+
+const validActionId = (req, res, next) => {
+    const {id} = req.params;
+
+    Actions.get(id)
+        .then(data=>{
+            if(data){
+                //passes the check
+                req.action = data;
+                next();
+            }else{
+                res.status(404).json({message:`No action found with id: ${id}`});
+            }
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(500).json({message:`Server error validating action ID`});
+        })
+};
+
+
+
+//----------------------------------
 //[ ]
 //endpoints
 //----------------------------------
@@ -25,7 +57,9 @@ router.get('/', (req, res) => {
 
 //[ ]
 //get :id
-
+router.get('/:id', validActionId, (req,res)=>{
+    res.status(200).json(req.action);
+});
 
 //[ ]
 //post new
@@ -38,12 +72,7 @@ router.get('/', (req, res) => {
 //[ ]
 //delete :id
 
+
 //----------------------------------
-
-
-//[ ]
-//middleware
-
-
 //export
 module.exports = router;
