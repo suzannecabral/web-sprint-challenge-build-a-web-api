@@ -1,7 +1,6 @@
 //imports
 const express = require('express');
 const Projects = require('./data/helpers/projectModel');
-const Actions = require('./data/helpers/actionModel');
 
 //define new router
 const router = express.Router();
@@ -51,52 +50,8 @@ const validProjectInput = (req, res, next) => {
     }
 };
 
-//[x]
-//validate Action Id
-const validActionId = (req, res, next) => {
-    const {id} = req.params;
-
-    Actions.get(id)
-        .then(data=>{
-            if(data){
-                //passes the check
-                req.action = data;
-                next();
-            }else{
-                res.status(404).json({message:`No action found with id: ${id}`});
-            }
-        })
-        .catch(err=>{
-            console.log(err);
-            res.status(500).json({message:`Server error validating action ID`});
-        })
-};
-
-//[x]
-//validate action input
-//needs: description, notes
-const validActionInput = (req, res, next) => {
-    console.log("ACTION INPUT VALIDATED");
-    next();
-    //there is a body to the message
-    if(Object.keys(req.body).length>0){
-        //body contains both name and description
-        if(req.body.description && req.body.notes){
-            // res.status(200).json({message:`Input validated`});
-            //passes the check, continue
-            next();
-        }else{
-            res.status(400).json({message:`Action description and notes are required`});
-        }
-    }else{
-        res.status(400).json({message:`Please provide action information`});
-    }
-}
-
-
-
 //----------------------------------
-//[ ]
+//[x]
 //endpoints
 //----------------------------------
 
@@ -170,47 +125,6 @@ router.delete('/:id', validProjectId, (req,res)=>{
             res.status(500).json({message:`Server error deleting project`});
         })
 });
-
-
-//[ ] FIX ERROR - PROMISE HANDLING
-//post new ACTION for project
-// **** must be associated with project
-//has description, notes
-router.post('/:id', validActionInput, (req,res)=>{
-    const project_id = req.params.id;
-    
-    const {notes, description} = req.body;
-    const newAction = {project_id, notes, description};
-
-    Actions.insert(newAction)
-        .then(()=>{
-            console.log("ACTION POST SUCCESS");
-            res.status(201).json({message:`New action created successfully`});
-        })
-        .catch(err=>{
-            console.log(err);
-            res.status(500).json({message:`Server error creating action`});
-        })
-});
-
-//[ ]FIX - it's asking for the project details using the project endopoint? 
-// "description is not defined"
-// workaround - ask user for project id
-// then keep it in actions router
-
-//update :id
-//has description, notes
-
-//------> This is on project router
-//------> Needs project ID
-
-// router.put('/:project_id/:id', validActionId, validActionInput, (req,res)=>{
-//     const {id, project_id} = req.params;
-//     const updatedAction = {id, project_id, description, notes}
-
-//     console.log("UPDATE SUCCCESS");
-//     console.log(updatedAction);
-// });
 
 // //----------------------------------
 //export

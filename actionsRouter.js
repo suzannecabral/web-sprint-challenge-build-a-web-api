@@ -38,12 +38,12 @@ const validActionInput = (req, res, next) => {
     //there is a body to the message
     if(Object.keys(req.body).length>0){
         //body contains both name and description
-        if(req.body.description && req.body.notes){
+        if(req.body.description && req.body.notes && req.body.project_id){
             // res.status(200).json({message:`Input validated`});
             //passes the check, continue
             next();
         }else{
-            res.status(400).json({message:`Action description and notes are required`});
+            res.status(400).json({message:`Action description, notes and project_id are required`});
         }
     }else{
         res.status(400).json({message:`Please provide action information`});
@@ -51,7 +51,7 @@ const validActionInput = (req, res, next) => {
 }
 
 //----------------------------------
-//[ ]
+//[x]
 //endpoints
 //----------------------------------
 
@@ -74,52 +74,43 @@ router.get('/:id', validActionId, (req,res)=>{
     res.status(200).json(req.action);
 });
 
-//[ ]
-//post new **** must be associated with project
-//has description, notes
+//[x]
+//post action
+//has description, notes, project_id
 
-//-----> this is located in projects router
-//      must be associated with a project
+//--> needs validator for post id
+router.post('/', validActionInput, (req,res)=>{
+    Actions.insert(req.body)
+        .then((data)=>{
+            console.log("ACTION POST SUCCESS");
+            res.status(201).json(data);
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(500).json({message:`Server error creating action`});
+        })
+});
 
-// router.post('/', validActionInput, (req,res)=>{
-//     const project_id = req.params.id;
-//     const {notes, description} = req.body;
-//     const newAction = {notes, description}
-
-//     Actions.insert(newAction)
-//         .then(()=>{
-//             console.log("ACTION POST SUCCESS");
-//             res.status(201).json({message:`New action created successfully`});
-//         })
-//         .catch(err=>{
-//             console.log(err);
-//             res.status(500).json({message:`Server error creating action`});
-//         })
-// });
-
-
-//[ ]
+//[x]
 //update :id
 //has description, notes
 
 //------> This is on project router
 //------> Needs project ID
 
-router.put('/:id', /*validActionId, validActionInput,*/ (req,res)=>{
+router.put('/:id', validActionId, validActionInput, (req,res)=>{
     const {id} = req.params;
-    // const {description, notes, project_id} = req.body;
-    // const updatedAction = {project_id, description, notes}
 
     Actions.update(id, req.body)
         .then(data=>{
             console.log(data);
+            res.status(200).json(data)
         })
         .catch(err=>{
             console.log(err);
+            res.status(500).json({message:`server error while updating action`});
         })
 
-    // console.log("UPDATE SUCCCESS");
-    // console.log(updatedAction);
 });
 
 
@@ -137,7 +128,6 @@ router.delete('/:id', validActionId, (req,res)=>{
             res.status(500).json({message:`Server error deleting action`});
         })
 });
-
 
 
 //----------------------------------
