@@ -6,7 +6,7 @@ const Actions = require('./data/helpers/actionModel');
 const router = express.Router();
 
 //----------------------------------
-//[ ]
+//[x]
 //middleware
 //----------------------------------
 
@@ -75,19 +75,48 @@ router.get('/:id', validActionId, (req,res)=>{
 });
 
 //[ ]
-//post new
-router.post('/', validActionInput, (req,res)=>{
-    console.log('SUCCESS');
-    // res.status(201).json(req.body);
-});
+//post new **** must be associated with project
+//has description, notes
+
+//-----> this is located in projects router
+//      must be associated with a project
+
+// router.post('/', validActionInput, (req,res)=>{
+//     const project_id = req.params.id;
+//     const {notes, description} = req.body;
+//     const newAction = {notes, description}
+
+//     Actions.insert(newAction)
+//         .then(()=>{
+//             console.log("ACTION POST SUCCESS");
+//             res.status(201).json({message:`New action created successfully`});
+//         })
+//         .catch(err=>{
+//             console.log(err);
+//             res.status(500).json({message:`Server error creating action`});
+//         })
+// });
 
 
 //[ ]
 //update :id
 
 
-//[ ]
+//[x]
 //delete :id
+router.delete('/:id', validActionId, (req,res)=>{
+    const {id} = req.params;
+    Actions.remove(id)
+        .then(()=>{
+            console.log("ACTION DELETE SUCCESS");
+            res.status(200).json({message:`Action deleted successfully`});
+            })
+        .catch(err=>{
+            console.log(err);
+            res.status(500).json({message:`Server error deleting action`});
+        })
+});
+
 
 
 //----------------------------------

@@ -2,6 +2,9 @@ const express = require('express');
 const projectsRouter = require('./projectsRouter');
 const actionsRouter = require('./actionsRouter');
 
+//server is deployed at:
+//https://sc-node-week1-sprint.herokuapp.com/
+
 //new server
 const server = express(); 
 
