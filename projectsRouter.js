@@ -137,7 +137,7 @@ router.post('/', validProjectInput, (req,res)=>{
         })
 });
 
-//[ ]
+//[x]
 //update :id
 //has name, description
 router.put('/:id', validProjectId, validProjectInput, (req,res)=>{
