@@ -31,10 +31,24 @@ const validActionId = (req, res, next) => {
         })
 };
 
-//[ ]
+//[x]
 //validate input
-
-
+//needs: description, notes
+const validActionInput = (req, res, next) => {
+    //there is a body to the message
+    if(Object.keys(req.body).length>0){
+        //body contains both name and description
+        if(req.body.description && req.body.notes){
+            // res.status(200).json({message:`Input validated`});
+            //passes the check, continue
+            next();
+        }else{
+            res.status(400).json({message:`Action description and notes are required`});
+        }
+    }else{
+        res.status(400).json({message:`Please provide action information`});
+    }
+}
 
 //----------------------------------
 //[ ]
@@ -54,7 +68,7 @@ router.get('/', (req, res) => {
     })
 });
 
-//[ ]
+//[x]
 //get :id
 router.get('/:id', validActionId, (req,res)=>{
     res.status(200).json(req.action);
@@ -62,6 +76,10 @@ router.get('/:id', validActionId, (req,res)=>{
 
 //[ ]
 //post new
+router.post('/', validActionInput, (req,res)=>{
+    console.log('SUCCESS');
+    // res.status(201).json(req.body);
+});
 
 
 //[ ]

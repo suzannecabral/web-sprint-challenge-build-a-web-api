@@ -31,8 +31,29 @@ const validProjectId = (req, res, next) => {
         })
 };
 
-//[ ]
+//[x]
 //validate input
+//needs: name, description
+const validProjectInput = (req, res, next) => {
+    //there is a body to the message
+    if(Object.keys(req.body).length>0){
+        //body contains both name and description
+        if(req.body.name && req.body.description){
+            // res.status(200).json({message:`Input validated`});
+            //passes the check, continue
+            next();
+        }else{
+            res.status(400).json({message:`Both name and description are required`});
+        }
+    }else{
+        res.status(400).json({message:`Please provide project information`});
+    }
+
+
+    
+
+    
+};
 
 //----------------------------------
 //[ ]
@@ -51,6 +72,7 @@ router.get('/', (req,res)=>{
             res.status(500).json({message:`server error retrieving projects data`});
         })
 });
+
 //[x]
 //get :id
 router.get('/:id', validProjectId, (req,res)=>{
@@ -59,7 +81,10 @@ router.get('/:id', validProjectId, (req,res)=>{
 
 //[ ]
 //post new
-
+router.post('/', validProjectInput, (req,res)=>{
+    console.log('SUCCESS');
+    // res.status(201).json(req.body);
+});
 
 //[ ]
 //update :id
