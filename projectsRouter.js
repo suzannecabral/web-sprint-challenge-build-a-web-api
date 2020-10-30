@@ -51,6 +51,26 @@ const validProjectInput = (req, res, next) => {
     }
 };
 
+//[x]
+//validate Action Id
+const validActionId = (req, res, next) => {
+    const {id} = req.params;
+
+    Actions.get(id)
+        .then(data=>{
+            if(data){
+                //passes the check
+                req.action = data;
+                next();
+            }else{
+                res.status(404).json({message:`No action found with id: ${id}`});
+            }
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(500).json({message:`Server error validating action ID`});
+        })
+};
 
 //[x]
 //validate action input
@@ -119,7 +139,22 @@ router.post('/', validProjectInput, (req,res)=>{
 
 //[ ]
 //update :id
+//has name, description
+router.put('/:id', validProjectId, validProjectInput, (req,res)=>{
+    const {id}=req.params;
+    const {name, description} = req.body;
+    const updatedProject = {id, name, description}
 
+    Projects.update(id, updatedProject)
+        .then(()=>{
+            res.status(200).json({message:`Updated project successfully`});
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(500).json({message:`Server error updating project`});
+        })
+
+});
 
 //[x]
 //delete :id
@@ -137,7 +172,7 @@ router.delete('/:id', validProjectId, (req,res)=>{
 });
 
 
-//[ ]
+//[ ] FIX ERROR - PROMISE HANDLING
 //post new ACTION for project
 // **** must be associated with project
 //has description, notes
@@ -157,6 +192,25 @@ router.post('/:id', validActionInput, (req,res)=>{
             res.status(500).json({message:`Server error creating action`});
         })
 });
+
+//[ ]FIX - it's asking for the project details using the project endopoint? 
+// "description is not defined"
+// workaround - ask user for project id
+// then keep it in actions router
+
+//update :id
+//has description, notes
+
+//------> This is on project router
+//------> Needs project ID
+
+// router.put('/:project_id/:id', validActionId, validActionInput, (req,res)=>{
+//     const {id, project_id} = req.params;
+//     const updatedAction = {id, project_id, description, notes}
+
+//     console.log("UPDATE SUCCCESS");
+//     console.log(updatedAction);
+// });
 
 //----------------------------------
 //export

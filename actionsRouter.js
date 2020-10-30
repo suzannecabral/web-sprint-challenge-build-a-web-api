@@ -100,6 +100,18 @@ router.get('/:id', validActionId, (req,res)=>{
 
 //[ ]
 //update :id
+//has description, notes
+
+//------> This is on project router
+//------> Needs project ID
+
+// router.put('/:project_id/:id', validActionId, validActionInput, (req,res)=>{
+//     const {id, project_id} = req.params;
+//     const updatedAction = {id, project_id, description, notes}
+
+//     console.log("UPDATE SUCCCESS");
+//     console.log(updatedAction);
+// });
 
 
 //[x]
