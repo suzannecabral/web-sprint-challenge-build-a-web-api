@@ -105,13 +105,22 @@ router.get('/:id', validActionId, (req,res)=>{
 //------> This is on project router
 //------> Needs project ID
 
-// router.put('/:project_id/:id', validActionId, validActionInput, (req,res)=>{
-//     const {id, project_id} = req.params;
-//     const updatedAction = {id, project_id, description, notes}
+router.put('/:id', /*validActionId, validActionInput,*/ (req,res)=>{
+    const {id} = req.params;
+    // const {description, notes, project_id} = req.body;
+    // const updatedAction = {project_id, description, notes}
 
-//     console.log("UPDATE SUCCCESS");
-//     console.log(updatedAction);
-// });
+    Actions.update(id, req.body)
+        .then(data=>{
+            console.log(data);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+
+    // console.log("UPDATE SUCCCESS");
+    // console.log(updatedAction);
+});
 
 
 //[x]
